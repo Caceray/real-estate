@@ -26,7 +26,10 @@ class AcquisitionForm(BaseForm):
 class RentForm(BaseForm):
   class Meta:
     model = Rent
+
     fields = '__all__'
+    exclude = ["dataframe"]
+
     widgets = {"rent": forms.TextInput(attrs={'class': 'currency-input'}),
                "start":forms.DateInput(attrs={"type": "date"}),
                'broker_fees': forms.TextInput(attrs={"class": 'currency-input'})}
@@ -39,10 +42,16 @@ class RentForm(BaseForm):
 class ChargeForm(BaseForm):
   class Meta:
     model = Charge
+
     fields = '__all__'
+    exclude = ["start","end"]
+
     widgets = {"property_tax": forms.TextInput(attrs={'class': 'currency-input'}),
                "waste_collection_tax": forms.TextInput(attrs={'class': 'currency-input'})}
 
+    labels = {"property_tax":"Taxe foncière",
+              "waste_collection_tax":"Taxe ordures ménagères"}
+    
 class LoanForm(BaseForm):
   class Meta:
     model = Loan

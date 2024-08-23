@@ -10,12 +10,7 @@ class Flows:
             for cf in flows:
                 self.cash_flows.update(cf.cash_flows)
         
-#    def copy(self):
-#        f = Flows()
-#        f.cash_flows = self.cash_flows.copy()
-#        return f
-        
-    def add_regular_flow(self, amount, name, start=None, end=None, periods=None, freq="MS", inflation=0):
+    def add_regular_flow(self, amount, name, start, end, periods=None, freq="MS", inflation=0):
         assert(not name in self.cash_flows.keys())
         
         index = pd.date_range(start, end, periods, freq)
@@ -75,7 +70,5 @@ if __name__ == "__main__":
     flows.add_regular_flow(300, "Rent", start=start, end=end, freq=freq)
     flows.add_regular_flow(-3, "Warranty", start=start, end=end, freq=freq)
     flows.add_single_flow(dt.datetime(2024, 9, 28), -2000, "Fees")
-
-    print(flows)
         
         
