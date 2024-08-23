@@ -1,0 +1,79 @@
+{% load static %}
+<html>
+    <head>
+        <title>Simulateur</title>
+        <link rel="stylesheet" href="{% static 'cash_flows/styles.css' %}" />
+        <link rel="stylesheet" href="{% static 'cash_flows/table.css' %}" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <form action="" method="post" novalidate>
+                
+                {% csrf_token %}
+              
+                <fieldset>
+                    <legend>Scénario locatif</legend>
+                    {% for field in rent %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+              
+                <fieldset>
+                    <legend>Acquisition</legend>
+                    {% for field in acquisition %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+
+                <fieldset>
+                    <legend>Charges locatives</legend>
+                    {% for field in charge %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+              
+                <fieldset>
+                    <legend>Financements</legend>
+                    {% for field in loan %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+                
+              <input type="submit" value="Envoyer">
+            </form>
+            <script src="{% static 'cash_flows/currency.js' %}"></script>
+
+            {% if loan_tab %}
+                <fieldset>
+                    <legend>Tableau d'Amortissement</legend>
+                    <div class="table-container">
+                        {{ loan_tab|safe }}
+                    </div>
+                </fieldset>
+            {% endif %}
+
+            {% if rent_tab %}
+                <fieldset>
+                    <legend>Loyers</legend>
+                    <div class="table-container">
+                        {{ rent_tab|safe }}
+                    </div>
+                </fieldset>
+            {% endif %}
+
+        </div>
+    </body>
+</html>

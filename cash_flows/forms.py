@@ -1,0 +1,55 @@
+from django import forms
+
+from cash_flows.models import Rent, Charge, Loan, Acquisition
+
+class BaseForm(forms.ModelForm):
+  def __init__(self, *args, **kwargs):
+    super(BaseForm, self).__init__(*args, **kwargs)
+    for field_name, field in self.fields.items():
+      if isinstance(field.widget, (forms.TextInput, forms.NumberInput)):
+        current_classes = field.widget.attrs.get('class', '')
+        field.widget.attrs['class'] = f"{current_classes} user-input".strip()
+        field.widget.attrs['wrapper_class'] = 'form-group'
+
+class AcquisitionForm(BaseForm):
+  class Meta:
+    model = Acquisition
+    fields = '__all__'
+    widgets = {'nominal': forms.TextInput(attrs={"class": 'currency-input'}),
+               'fees': forms.TextInput(attrs={"class": 'currency-input'}),
+               "start":forms.DateInput(attrs={"class": "date"})}
+
+    labels = {"nominal":"Prix d'achat",
+              "fees":"Frais d'acqusition",
+              "start":"Date d'achat"}
+
+class RentForm(BaseForm):
+  class Meta:
+    model = Rent
+    fields = '__all__'
+    widgets = {"rent": forms.TextInput(attrs={'class': 'currency-input'}),
+               "start":forms.DateInput(attrs={"type": "date"}),
+               'broker_fees': forms.TextInput(attrs={"class": 'currency-input'})}
+    
+    labels = {"rent":"Loyer mensuel",
+              "warranty":"Assurance GLI",
+              "start":"Date mise en location",
+              "broker_fees":"Frais de mise en location"}
+
+class ChargeForm(BaseForm):
+  class Meta:
+    model = Charge
+    fields = '__all__'
+    widgets = {"property_tax": forms.TextInput(attrs={'class': 'currency-input'}),
+               "waste_collection_tax": forms.TextInput(attrs={'class': 'currency-input'})}
+
+class LoanForm(BaseForm):
+  class Meta:
+    model = Loan
+    fields = '__all__'
+    widgets = {"nominal": forms.TextInput(attrs={'class': 'currency-input'}),
+               "start":forms.DateInput(attrs={"type":"date"})}
+
+    labels = {"rate":"Taux",
+              "duration":"Durée (années)",
+              "start":"Date de déblocage des fonds"}

@@ -1,0 +1,21 @@
+# Environments
+env/
+venv/
+
+# Compiled files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Database
+*.sqlite3
+*.db
+db.sqlite3-journal
+
+# Security
+*.pem
+
+# Dev environment
+.DS_Store
+**/.DS_Store

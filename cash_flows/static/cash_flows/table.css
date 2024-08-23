@@ -1,0 +1,16 @@
+.table-container td, .table-container th{
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.1em;
+}
+
+.table-container th {
+    text-align: center;
+    font-size: 14px;
+}
+
+.table-container td {
+    text-align: left;
+    font-size: 12px;
+}
