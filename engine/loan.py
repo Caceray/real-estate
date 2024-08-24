@@ -3,6 +3,10 @@ import datetime as dt
 
 from .flows import Flows
 
+AM = "Amortissement"
+ITR = "Intérêts"
+CRD = "Capital restant dû"
+
 class Loan(Flows):
     def __init__(self, amount, annual_rate, duration, start):
         super().__init__()
@@ -12,7 +16,8 @@ class Loan(Flows):
         
         self.monthly_rate = R
         self.monthly_payment = amount * R / ( 1 - ( 1 + R ) ** (-D) )
-        
+        print(f"Mensualité = {self.monthly_payment:.2f}€")
+
         self.duration = duration * 12
         
         # Create DataFrame
@@ -30,9 +35,9 @@ class Loan(Flows):
             interests.append(I)
             
         index = pd.date_range(start=start, periods=self.duration, freq='MS') + pd.DateOffset(days=start.day-1)
-        self.add_flows(index, amortizations, "Amortization")
-        self.add_flows(index, interests, "Interest")
-        self.add_flows(index, outstanding_principal, "Outstanding principal")
+        self.add_flows(index, amortizations, AM)
+        self.add_flows(index, interests, ITR)
+        self.add_flows(index, outstanding_principal, CRD)
 
     def __str__(self):
         df = self.get_dataframe()
@@ -40,9 +45,9 @@ class Loan(Flows):
     
     def annual_flows(self, expanded=True):
         df = self.get_dataframe()
-        df = df.groupby(pd.Grouper(freq='YE')).agg({'Amortization': 'sum',
-                                'Interest': 'sum',
-                                'Outstanding principal': 'last'})
+        df = df.groupby(pd.Grouper(freq='YE')).agg({AM: 'sum',
+                                                    ITR: 'sum',
+                                                    CRD: 'last'})
         return df
         
 if __name__ == "__main__":

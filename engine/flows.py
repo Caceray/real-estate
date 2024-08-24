@@ -49,7 +49,7 @@ class Flows:
         return F
         
     def get_dataframe(self):
-        return pd.DataFrame(self.cash_flows).fillna(0).sort_index()
+        return pd.DataFrame(self.cash_flows).fillna(0).sort_index().round(2)
         
     def annual_flows(self, expanded=True):
         df = self.get_dataframe()
@@ -59,7 +59,13 @@ class Flows:
         else:
             return df.groupby(pd.Grouper(freq='YE')).sum().sum(axis=1)
         
-        
+    def add_proportional_flows(self, key, factor, name):
+        flows = self.cash_flows[key]
+        new_flows = {}
+        for idx, cf in flows.items():
+            new_flows[idx] = cf * factor
+        self.cash_flows[name] = new_flows
+
 if __name__ == "__main__":
     flows = Flows()
     

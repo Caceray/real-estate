@@ -38,9 +38,11 @@ class Rent(BaseModel):
     warranty = models.fields.FloatField(default=2.5)
     start = models.DateField(default="2024-09-01")
     broker_fees = models.fields.IntegerField(default=300)
+    inflation = models.fields.FloatField(default=1)
 
     def create_dataframe(self):
-        self.dataframe_engine = engine.Rent(self.rent, self.start, END, warranty=self.warranty, broker_fees=self.broker_fees)
+        self.dataframe_engine = engine.Rent(self.rent, self.start, END,
+                                            warranty=self.warranty, broker_fees=self.broker_fees, inflation=self.inflation)
 
 class Charge(BaseModel):
     property_tax = models.fields.IntegerField(default=500)

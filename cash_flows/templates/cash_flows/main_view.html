@@ -56,24 +56,36 @@
             </form>
             <script src="{% static 'cash_flows/currency.js' %}"></script>
 
-            {% if loan_tab %}
-                <fieldset>
-                    <legend>Tableau d'Amortissement</legend>
-                    <div class="table-container">
-                        {{ loan_tab|safe }}
-                    </div>
-                </fieldset>
-            {% endif %}
+            {% if results %}
+                <div class="tabs">
+                    <ul class="tab-links">
+                        <li class="active"><a href="#rent">Loyers</a></li>
+                        <li><a href="#loan">Financements</a></li>
+                        <li><a href="#taxes">Fiscalité</a></li>
+                        <li><a href="#result">Trésorerie</a></li>
+                    </ul>
+                
+                    <div class="tab-content">
+                        <div id="rent" class="tab active">
+                            <div class="table-container">
+                                {{ results.rent|safe }}
+                            </div>
+                        </div>
+                
+                        <div id="loan" class="tab">
+                            <div class="table-container">
+                                {{ results.loan|safe }}
+                            </div>
+                        </div>
 
-            {% if rent_tab %}
-                <fieldset>
-                    <legend>Loyers</legend>
-                    <div class="table-container">
-                        {{ rent_tab|safe }}
+                        <div id="result" class="tab">
+                            <div class="table-container">
+                                {{ results.result|safe }}
+                            </div>
+                        </div>
                     </div>
-                </fieldset>
+                </div>
             {% endif %}
-
         </div>
     </body>
 </html>

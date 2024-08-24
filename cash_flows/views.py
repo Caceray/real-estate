@@ -32,34 +32,19 @@ def main_view(request):
         acquisition_form, _, _ = extract_form(AcquisitionForm, request)
 
         import pandas as pd
-        df = pd.concat([rent_df, -loan_df["Interest"]], axis=1).sort_index()
+        df = pd.concat([rent_df, -loan_df["Intérêts"]], axis=1).sort_index()
 
+        df_result = pd.concat([rent_df, -loan_df[["Amortissement", "Intérêts"]]], axis=1).sort_index()
+        df_result["Solde"] = df_result.sum(axis=1)
+        
         html_input = {"rent":rent_form,
                       "loan":loan_form,
                       "charge":charge_form,
-                      "acquisition":acquisition_form,
-                      "rent_tab":rent_html,
-                      "loan_tab":loan_html}
-
-        # Compute annual benefits
-
-        # for category in categories:
-        #     key = category.__name__.replace("Form","").lower()
-        #     form = category(request.POST)
-        #     if form.is_valid():
-        #         instance = form.save(commit=False)
-        #         html_input[key] = form
-        #         if key == "loan":
-        #             html_input["loan_tab"] = instance.to_html()
-        #         elif key == "rent":
-        #             html_input["rent_tab"] = instance.to_html(annual=False)
-        #     else:
-        #         print(f"Form {key} is not valid!")
-        #         print(form.errors)
-
-        # rent = RentForm(request.POST).save(commit=False).get_object().get_dataframe()
-        # loan = LoanForm(request.POST).save(commit=False).get_object().get_dataframe()
-
+                      "acquisition":acquisition_form}
+        
+        html_input["results"] = {"rent":rent_html,
+                                 "loan":loan_html,
+                                 "result":df_result.to_html()}
     else:
         for category in categories:
             key = category.__name__.replace("Form","").lower()

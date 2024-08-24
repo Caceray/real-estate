@@ -10,15 +10,15 @@ class Rent(Flows):
         self.broker_fees = broker_fees
         self.inflation = inflation
 
-        self.add_regular_flow(nominal, "Nominal", start, end, inflation=inflation)
+        self.add_regular_flow(nominal, "Loyer", start, end, inflation=inflation)
 
         if warranty:
-            self.add_regular_flow(-self.warranty, "Warranty", start, end)
+            self.add_proportional_flows("Loyer", -self.warranty/100, "GLI")
 
         if broker_fees:
             # Adjust first cash flow by fees
-            for date, cf in self.cash_flows["Nominal"].items():
-                self.cash_flows["Nominal"][date] = cf - broker_fees
+            for date, cf in self.cash_flows["Loyer"].items():
+                self.cash_flows["Loyer"][date] = cf - broker_fees
                 break
 
 if __name__ == "__main__":

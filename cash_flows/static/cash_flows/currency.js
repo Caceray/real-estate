@@ -48,3 +48,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Formate les champs au chargement de la page
     formatInputsOnLoad();
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const tabLinks = document.querySelectorAll(".tab-links a");
+    const tabs = document.querySelectorAll(".tab-content .tab");
+
+    tabLinks.forEach(function(link) {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            const activeTab = document.querySelector(".tab-content .tab.active");
+            const activeLink = document.querySelector(".tab-links li.active");
+
+            if (activeTab) {
+                activeTab.classList.remove("active");
+            }
+            if (activeLink) {
+                activeLink.classList.remove("active");
+            }
+
+            this.parentNode.classList.add("active");
+            const targetTab = document.querySelector(this.getAttribute("href"));
+            targetTab.classList.add("active");
+        });
+    });
+});
