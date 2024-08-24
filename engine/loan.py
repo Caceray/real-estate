@@ -16,7 +16,6 @@ class Loan(Flows):
         
         self.monthly_rate = R
         self.monthly_payment = amount * R / ( 1 - ( 1 + R ) ** (-D) )
-        print(f"Mensualité = {self.monthly_payment:.2f}€")
 
         self.duration = duration * 12
         

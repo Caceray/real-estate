@@ -71,10 +71,11 @@ class LocationNue(Fiscalite):
                 deficits.pop(0)
 
         # Ajouter colonnes
-        df["IR"] = -df.Resultat * TMI / 100
-        df["PS"] = -df.Resultat * PS / 100
-        df["Total"] = df[["IR","PS"]].sum(axis=1)
-        df["Pression fiscale"] = round(100 * abs((df["Total"] + df["Taxe fonciere"]) / df["Loyer"]), 2)
+        df["IR"] = -(df.Resultat * TMI / 100).round(2)
+        df["PS"] = -(df.Resultat * PS / 100).round(2)
+        total = df[["IR","PS"]].sum(axis=1)
+        df["Pression fiscale"] = round(100 * abs((total + df["Impôts locaux"]) / df["Loyer"]), 2)
+        df = df.replace(-0, 0)
         return df
     
 if __name__ == "__main__":

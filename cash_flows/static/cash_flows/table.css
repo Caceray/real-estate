@@ -68,6 +68,6 @@ li.active a, li.active a:hover {
 }
 
 .table-container td {
-    text-align: left;
+    text-align: right;
     font-size: 12px;
 }

@@ -48,15 +48,14 @@ class Charge(BaseModel):
     property_tax = models.fields.IntegerField(default=500)
     waste_collection_tax = models.fields.IntegerField(default=250)
     start = None
-    end = None
 
     def create_dataframe(self):
         assert(not self.start is None)
         assert(not self.end is None)
         self.dataframe_engine = engine.Flows()
 
-        self.dataframe_engine.add_regular_flow(self.property_tax, "Property tax", self.start, self.end, freq="Y")
-        self.dataframe_engine.add_regular_flow(self.waste_collection_tax, "Waste tax", self.start, self.end, freq="Y")
+        self.dataframe_engine.add_regular_flow(self.property_tax, "Property tax", self.start, END, freq="Y")
+        self.dataframe_engine.add_regular_flow(self.waste_collection_tax, "Waste tax", self.start, END, freq="Y")
 
 class Loan(BaseModel):
     nominal = models.fields.IntegerField(default=100000)

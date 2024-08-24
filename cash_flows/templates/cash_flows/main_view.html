@@ -61,8 +61,8 @@
                     <ul class="tab-links">
                         <li class="active"><a href="#rent">Loyers</a></li>
                         <li><a href="#loan">Financements</a></li>
-                        <li><a href="#taxes">Fiscalité</a></li>
-                        <li><a href="#result">Trésorerie</a></li>
+                        <li><a href="#taxation">Fiscalité</a></li>
+                        <li><a href="#treasury">Trésorerie</a></li>
                     </ul>
                 
                     <div class="tab-content">
@@ -73,14 +73,21 @@
                         </div>
                 
                         <div id="loan" class="tab">
+                            <p>Mensualité = {{ monthly_payment }}€</p>
                             <div class="table-container">
                                 {{ results.loan|safe }}
                             </div>
                         </div>
 
-                        <div id="result" class="tab">
+                        <div id="taxation" class="tab">
                             <div class="table-container">
-                                {{ results.result|safe }}
+                                {{ results.taxation|safe }}
+                            </div>
+                        </div>
+
+                        <div id="treasury" class="tab">
+                            <div class="table-container">
+                                {{ results.treasury|safe }}
                             </div>
                         </div>
                     </div>
