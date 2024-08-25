@@ -31,26 +31,13 @@ def main_view(request):
         charge_form, charge_df, charge_html = extract_form(ChargeForm, request)
         acquisition_form, _, _ = extract_form(AcquisitionForm, request)
 
-        import pandas as pd
-        df = pd.concat([rent_df, -loan_df["Intérêts"]], axis=1).sort_index()
-
         # Compute taxes
         df_local_taxes = charge_df.sum(axis=1)
         df_local_taxes.name = "Impôts locaux"
-        df_taxation = pd.concat([rent_df, -loan_df["Intérêts"], -df_local_taxes], axis=1)
-        df_taxation = df_taxation.groupby(pd.Grouper(freq='YE')).sum()
-        df_taxation = LocationNue.calcul_deficit_foncier(df_taxation, 30, 17.2)
 
-        # Compute real estate result
-        df_treasury = pd.concat([rent_df,
-                                 -loan_df[["Amortissement", "Intérêts"]],
-                                 -df_local_taxes,
-                                 -df_taxation[["IR","PS"]]], axis=1)
-
-        df_treasury = df_treasury.sort_index().fillna(0)
-        df_treasury["Solde"] = df_treasury.sum(axis=1)
-        df_treasury = df_treasury.groupby(pd.Grouper(freq='YE')).sum()
-
+        # Compute real estate benefits
+        df_taxation, df_treasury = LocationNue.get_taxes_and_treasury(rent_df, [loan_df], [-df_local_taxes])
+        
         # Output to html
         html_input = {"rent":rent_form,
                       "loan":loan_form,

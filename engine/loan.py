@@ -44,9 +44,9 @@ class Loan(Flows):
     
     def annual_flows(self, expanded=True):
         df = self.get_dataframe()
-        df = df.groupby(pd.Grouper(freq='YE')).agg({AM: 'sum',
-                                                    ITR: 'sum',
-                                                    CRD: 'last'})
+        df = df.groupby(pd.Grouper(freq='Y')).agg({AM: 'sum',
+                                                   ITR: 'sum',
+                                                   CRD: 'last'})
         return df
         
 if __name__ == "__main__":

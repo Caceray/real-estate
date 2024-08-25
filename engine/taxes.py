@@ -23,21 +23,24 @@ class LocationNue(Fiscalite):
     def calculer_benefices(self):
         pass
         
-    def calculer_benefices(self, loyers, emprunts=[], charges=[]):
-        cfs = []
-        
-        # Extraire les interets d'emprunts
-        interets = Flows()
-        if len(emprunts) == 1:
-                interets.add_series("Intêrets", emprunts[0].cash_flows["Interest"])
-        else:
-            for i, emprunt in enumerate(emprunts):
-                interets_i = emprunt.cash_flows["Interest"]
-                interets.add_series(f"Intêrets {i+1}", interets_i)
+    def get_taxes_and_treasury(loyers, emprunts=[], charges=[]):
+        df_benefits = LocationNue.calculer_benefices(loyers, emprunts, charges)
+        df_taxation = LocationNue.calcul_deficit_foncier(df_benefits, 30, 17.2)
 
-        # Créer un tableau pour le résultat comptable
-        flux = [loyers, -interets] + charges
-        df = Flows(flux).annual_flows()
+        # Compute real estate result
+        loans = [-x[["Amortissement", "Intérêts"]] for x in emprunts]
+        df_treasury = pd.concat([loyers] + loans + charges + [df_taxation[["IR","PS"]]], axis=1)
+
+        df_treasury = df_treasury.sort_index().fillna(0)
+        df_treasury["Solde"] = df_treasury.sum(axis=1)
+        df_treasury = df_treasury.groupby(pd.Grouper(freq='Y')).sum()
+
+        return df_taxation, df_treasury
+    
+    def calculer_benefices(loyers, emprunts=[], charges=[]):
+        interests = [-emprunt["Intérêts"] for emprunt in emprunts]
+        result = pd.concat([loyers] + interests + charges, axis=1).groupby(pd.Grouper(freq='Y')).sum()
+        return result
         
     def calcul_deficit_foncier(df, TMI, PS):
         df["Resultat"] = df.sum(axis=1)

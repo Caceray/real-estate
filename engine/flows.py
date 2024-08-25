@@ -55,9 +55,9 @@ class Flows:
         df = self.get_dataframe()
         
         if expanded:
-            return df.groupby(pd.Grouper(freq='YE')).sum()
+            return df.groupby(pd.Grouper(freq='Y')).sum()
         else:
-            return df.groupby(pd.Grouper(freq='YE')).sum().sum(axis=1)
+            return df.groupby(pd.Grouper(freq='Y')).sum().sum(axis=1)
         
     def add_proportional_flows(self, key, factor, name):
         flows = self.cash_flows[key]
