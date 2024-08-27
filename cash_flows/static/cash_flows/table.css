@@ -2,9 +2,17 @@
 .tabs {
 	width:100%;
 	display:inline-block;
+    justify-content: center;
 }
 
 /*----- Tab Links -----*/
+.tab-links {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0 auto;
+}
+
 /* Clearfix */
 	.tab-links:after {
 	display:block;
@@ -41,10 +49,7 @@ li.active a, li.active a:hover {
 
 /*----- Content of Tabs -----*/
 .tab-content {
-	padding:15px;
-	border-radius:3px;
-	box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
-	background:#fff;
+	padding:40px;
 }
 
 .tab {
@@ -53,6 +58,19 @@ li.active a, li.active a:hover {
 
 .tab.active {
 	display:block;
+}
+
+table {
+    border-collapse: collapse;
+    text-align: left;
+    background-color: #fff;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .table-container td, .table-container th{
@@ -70,4 +88,21 @@ li.active a, li.active a:hover {
 .table-container td {
     text-align: right;
     font-size: 12px;
+}
+
+.table-container thead th{
+    background: #0056b3;
+    color: #ffffff;
+}
+
+.table-container tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.table-container tbody tr:nth-child(odd) {
+    background-color: #ededed;
+}
+
+.table-container tbody tr:hover {
+    background-color: #a9d3ff;
 }
