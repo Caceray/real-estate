@@ -15,7 +15,13 @@ class Loan(Flows):
         D = duration * 12
         
         self.monthly_rate = R
-        self.monthly_payment = amount * R / ( 1 - ( 1 + R ) ** (-D) )
+        if amount:
+            if self.monthly_rate:
+                self.monthly_payment = amount * R / ( 1 - ( 1 + R ) ** (-D) )
+            else:
+                self.monthly_payment = amount / D
+        else:
+            self.monthly_payment = 0
 
         self.duration = duration * 12
         
