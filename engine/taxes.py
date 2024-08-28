@@ -29,7 +29,13 @@ class LocationNue(Fiscalite):
 
         # Compute real estate result
         loans = [-x[["Amortissement", "Intérêts"]] for x in emprunts]
-        df_treasury = pd.concat([loyers] + loans + charges + [df_taxation[["IR","PS"]]], axis=1)
+        loans = pd.concat(loans).sum(axis=1)
+        loans = loans.rename("Emprunts")
+
+        df_global_taxes = df_taxation[["IR","PS"]].sum(axis=1)
+        df_global_taxes = df_global_taxes.rename('IR+PS')
+
+        df_treasury = pd.concat([loyers, loans] + charges + [df_global_taxes], axis=1)
 
         df_treasury = df_treasury.sort_index().fillna(0)
         df_treasury["Solde"] = df_treasury.sum(axis=1)
