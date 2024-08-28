@@ -40,13 +40,6 @@ form {
     gap: 20px; /* Espace entre les éléments */
 }
 
-/* Spécifique aux champs de date pour garder la cohérence */
-form input[type="date"] {
-    text-align: right;
-    padding-right: 10px;
-    min-width: 140px;
-}
-
 form input[type="submit"] {
     grid-column: 1 / -1; /* Le bouton occupe toute la largeur */
     justify-self: center; /* Centre le bouton horizontalement */
@@ -65,8 +58,12 @@ form input[type="submit"]:hover {
 
 .user-input {
     text-align: right; /* Aligne le texte à droite */
-    padding-right: 10px; /* Ajoute un peu d'espace à droite pour améliorer l'esthétique */
-    min-width: 140px;
+    max-width: 100px;
+    margin-right: 10px;
+}
+
+.user-input[type="date"], .user-input[type="period"] {
+    margin-right: 23px;
 }
 
 /* Assurez-vous que chaque champ est contenu dans un div .form-group */
@@ -81,12 +78,4 @@ form input[type="submit"]:hover {
 .form-group label {
     flex: 1;
     text-align: left;
-}
-
-/* Aligner les inputs à droite */
-.form-group input {
-    flex: .3;
-    text-align: right;
-    padding-right: 10px;
-    box-sizing: border-box;
 }

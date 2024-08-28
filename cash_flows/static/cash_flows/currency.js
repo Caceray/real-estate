@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function formatCurrency(value) {
         const number = parseFloat(value.replace(/[^\d]/g, '') || 0);
-        return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(number);
+        return new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 0 }).format(number);
     }
 
     function parseCurrency(value) {

@@ -6,18 +6,20 @@ class BaseForm(forms.ModelForm):
   def __init__(self, *args, **kwargs):
     super(BaseForm, self).__init__(*args, **kwargs)
     for field_name, field in self.fields.items():
-      if isinstance(field.widget, (forms.TextInput, forms.NumberInput)):
+      if isinstance(field.widget, (forms.TextInput, forms.DateInput)):
         current_classes = field.widget.attrs.get('class', '')
-        field.widget.attrs['class'] = f"{current_classes} user-input".strip()
-        field.widget.attrs['wrapper_class'] = 'form-group'
+        field.widget.attrs["class"] = f"{current_classes} user-input".strip()
+        field.widget.attrs["wrapper_class"] = "form-group"
+      else:
+        raise TypeError(f"Unexpected widget [{type(field.widget)}] for field [{field_name}]")
 
 class AcquisitionForm(BaseForm):
   class Meta:
     model = Acquisition
     fields = '__all__'
-    widgets = {'nominal': forms.TextInput(attrs={"class": 'currency-input'}),
-               'fees': forms.TextInput(attrs={"class": 'currency-input'}),
-               "start":forms.DateInput(attrs={"class": "date"})}
+    widgets = {"nominal": forms.TextInput(attrs={"class": "currency-input"}),
+               "fees": forms.TextInput(attrs={"class": "currency-input"}),
+               "start":forms.DateInput(attrs={"type": "date"})}
 
     labels = {"nominal":"Prix d'achat",
               "fees":"Frais d'acqusition",
@@ -32,7 +34,9 @@ class RentForm(BaseForm):
 
     widgets = {"rent": forms.TextInput(attrs={'class': 'currency-input'}),
                "start":forms.DateInput(attrs={"type": "date"}),
-               'broker_fees': forms.TextInput(attrs={"class": 'currency-input'})}
+               'broker_fees': forms.TextInput(attrs={"class": 'currency-input',}),
+               "warranty": forms.TextInput(attrs={"class": "rate-input"}),
+               "inflation": forms.TextInput(attrs={"class": "rate-input"})}
     
     labels = {"rent":"Loyer mensuel",
               "warranty":"Assurance GLI",
@@ -57,7 +61,9 @@ class LoanForm(BaseForm):
     model = Loan
     fields = '__all__'
     widgets = {"nominal": forms.TextInput(attrs={'class': 'currency-input'}),
-               "start":forms.DateInput(attrs={"type":"date"})}
+               "start":forms.DateInput(attrs={"type": "date"}),
+               "rate":forms.TextInput(attrs={"class": "rate-input"}),
+               "duration":forms.TextInput(attrs={"type": "period"})}
 
     labels = {"rate":"Taux",
               "duration":"Durée (années)",
